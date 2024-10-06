@@ -15,6 +15,7 @@ namespace Student_Information_System.Repository.Interfaces
         public void UpdateCourseInfo(int courseId,string courseName, string courseCode, int credits, int teacherId);
         public void DeleteCourseInfo(int courseId);
         public void GetEnrollments(int courseId);
+        public void GenerateEnrollmentReport(int courseId);
         public void GetTeacher(int courseId);
     }
 }

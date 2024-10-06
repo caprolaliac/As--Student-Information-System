@@ -26,7 +26,8 @@ namespace Main
                 Console.WriteLine("Student Information System ");
                 Console.WriteLine("1. Student Management");
                 Console.WriteLine("2. Course Management");
-                Console.WriteLine("3. Exit");
+                Console.WriteLine("3. Generate Enrollment Report");
+                Console.WriteLine("4. Exit");
                 Console.Write("Enter your choice: ");
 
                 int choice = Convert.ToInt32(Console.ReadLine());
@@ -40,8 +41,14 @@ namespace Main
                     case 2:
                         CourseManagement();
                         break;
-
                     case 3:
+                        Console.WriteLine("\nEnrollment report.\n");
+                        Console.Write("Enter Course ID for Enrollment Report: ");
+                        int courseId = Convert.ToInt32(Console.ReadLine());
+                        _courseRepo.GenerateEnrollmentReport(courseId);
+                        break;
+
+                    case 4:
                         running = false;
                         break;
 
@@ -119,7 +126,7 @@ namespace Main
             Console.WriteLine("Course Management.");
             Console.WriteLine("1. Add New Course");
             Console.WriteLine("2. View Course Details");
-            Console.WriteLine("0. Back to Main Menu");
+            Console.WriteLine("3. Back to Main Menu");
             Console.Write("Enter your choice: ");
 
             int courseChoice = Convert.ToInt32(Console.ReadLine());
@@ -134,7 +141,7 @@ namespace Main
                     ViewCourse();
                     break;
 
-                case 0:
+                case 3:
                     break;
 
                 default:

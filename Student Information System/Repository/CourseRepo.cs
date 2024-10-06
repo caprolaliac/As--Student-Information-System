@@ -3,6 +3,7 @@ using Student_Information_System.Repository.Interfaces;
 using Student_Information_System.Utility;
 using System.Data.SqlClient;
 using Student_Information_System.Exceptions;
+using System.Text;
 
 namespace Student_Information_System.Repository
 {
@@ -285,6 +286,46 @@ namespace Student_Information_System.Repository
                 {
                     Console.WriteLine(ex.Message);
                 }
+            }
+        }
+        public void GenerateEnrollmentReport(int courseId)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(DbConnUtil.GetConnString()))
+                {
+                    connection.Open();
+                    using (var cmd = new SqlCommand("select e.student_id, s.first_name, s.last_name, e.enrollment_date from Enrollments e where e.course_id = @CourseId", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@CourseId", courseId);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                var report = new StringBuilder();
+                                report.AppendLine($"Enrollment Report for Course ID: {courseId}\n");
+                                report.AppendLine("Student ID | First Name | Last Name | Enrollment Date");
+                                report.AppendLine(new string('-', 50));
+
+                                while (reader.Read())
+                                {
+                                    report.AppendLine($"{reader["student_id"]} | {reader["first_name"]} | {reader["last_name"]} | {((DateTime)reader["enrollment_date"]).ToShortDateString()}");
+                                }
+
+                                 Console.WriteLine(report.ToString());
+                            }
+                            else
+                            {
+                                Console.WriteLine($"No enrollments found for Course ID: {courseId}.");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error generating enrollment report: {ex.Message}");
             }
         }
 
